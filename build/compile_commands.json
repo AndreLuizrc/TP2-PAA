@@ -1,0 +1,14 @@
+[
+{
+  "directory": "C:/projects/TP2-PAA/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/MyCppProject.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\MyCppProject.dir\\src\\main.cpp.obj -c C:\\projects\\TP2-PAA\\src\\main.cpp",
+  "file": "C:/projects/TP2-PAA/src/main.cpp",
+  "output": "CMakeFiles/MyCppProject.dir/src/main.cpp.obj"
+},
+{
+  "directory": "C:/projects/TP2-PAA/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/MyCppProject.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\MyCppProject.dir\\src\\my_header.cpp.obj -c C:\\projects\\TP2-PAA\\src\\my_header.cpp",
+  "file": "C:/projects/TP2-PAA/src/my_header.cpp",
+  "output": "CMakeFiles/MyCppProject.dir/src/my_header.cpp.obj"
+}
+]
