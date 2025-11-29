@@ -34,4 +34,7 @@ void processAndPrintSimilarities(const ImageVectorData& imgComparar, const std::
 /* PROCESSAR E PRINTAR KD Tree */
 void processWithKDTree(const std::string& folderBD, const std::string& folderComparar);
 
+/* PROCESSAR E PRINTAR LSH */
+void processWithLSH(const std::string& folderBD, const std::string& folderComparar);
+
 #endif // MY_HEADER_H

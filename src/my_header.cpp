@@ -10,6 +10,7 @@
 #include <chrono>
 #include <ctime> 
 #include "arvore.h"
+#include "lsh.h" // Incluir o cabeçalho LSH
 
 namespace fs = std::filesystem;
 using namespace std;
@@ -69,6 +70,40 @@ void printRows(const vector<ImageVectorData>& bdImagens,
             cout << "|" << setw(15) << fixed << setprecision(4) << sim;
         }
         cout << "|" << endl;
+    }
+}
+
+// -----------------------------------------------------------------
+// LSH
+// -----------------------------------------------------------------
+
+void processWithLSH(const std::string& folderBD, const std::string& folderComparar) {
+    std::cout << "--------------------------------------------------------\n\n";
+    std::cout << "  LSH\n\n";
+    std::cout << "--------------------------------------------------------\n\n";
+
+    LSHIndex lsh(8100); // Dimensão 8100, ajustado com base na vetorização HOG
+
+    std::vector<ImageVectorData> bdImagensLSH = loadImages(folderBD, "BD");
+    if (bdImagensLSH.empty()) {
+        std::cerr << "Erro: BD esta vazio para LSH." << std::endl;
+        return;
+    }
+    lsh.addMultiple(bdImagensLSH);
+
+    std::vector<ImageVectorData> vCompararImagensLSH = loadImages(folderComparar, "comparar");
+    if (vCompararImagensLSH.empty()) {
+        std::cerr << "Erro: comparar esta vazio para LSH." << std::endl;
+        return;
+    }
+
+    for (const auto& imgComparar : vCompararImagensLSH) {
+        std::vector<LSHIndex::Result> results = lsh.query(imgComparar.vector, 5); // top 5
+        std::cout << "Imagens similares para " << imgComparar.name << " (LSH):\n";
+        for (const auto& result : results) {
+            std::cout << "  - " << result.image_name << " (Similaridade: " << std::fixed << std::setprecision(4) << result.similarity << ")\n";
+        }
+        std::cout << "\n";
     }
 }
 
