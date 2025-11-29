@@ -37,4 +37,6 @@ void processWithKDTree(const std::string& folderBD, const std::string& folderCom
 /* PROCESSAR E PRINTAR LSH */
 void processWithLSH(const std::string& folderBD, const std::string& folderComparar);
 
+void processWithMTree(const std::string& folderBD, const std::string& folderComparar);
+
 #endif // MY_HEADER_H

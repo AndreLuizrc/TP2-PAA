@@ -4,6 +4,7 @@
 #include <vector>
 #include <filesystem>
 #include "arvore.h"
+#include "mtree.h"
 #include <opencv2/opencv.hpp>
 #include "image_vectorization.h"
 #include "my_header.h"
@@ -14,8 +15,6 @@ int main()
 {
   const std::string folderBD = "imgs/BD";
   const std::string folderComparar = "imgs/comparar";
-
-  processWithLSH(folderBD, folderComparar);
 
   /* LISTA */
   std::cout << "--------------------------------------------------------\n\n";
@@ -36,19 +35,28 @@ int main()
   }
 
 
-  /* ARVORE */
+  /* ARVORE KD-TREE */
   std::cout << "--------------------------------------------------------\n\n";
   std::cout << "  KDTree\n\n";
   std::cout << "--------------------------------------------------------\n\n";
 
   processWithKDTree(folderBD, folderComparar);
 
+
+  /* M-TREE */
+  std::cout << "--------------------------------------------------------\n\n";
+  std::cout << "  M-Tree\n\n";
+  std::cout << "--------------------------------------------------------\n\n";
+
+  processWithMTree(folderBD, folderComparar);
+
+
   /* TABELA COMPLETA DAS IMGS */
-  // if (!vCompararImagens.empty() && !bdImagens.empty())
-  // {
-  //     printTable(vCompararImagens, bdImagens, vCompararImagens.size());
-  // }
-  
-  
+  if (!vCompararImagens.empty() && !bdImagens.empty())
+  {
+      printTable(vCompararImagens, bdImagens, vCompararImagens.size());
+  }
+
+
   return 0;
 }
