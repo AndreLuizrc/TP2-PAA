@@ -22,6 +22,12 @@ ImageVectorData vectorization(const cv::Mat &imgBgr, const std::string& imageNam
     std::vector<float> vectorDesc;
     hog.compute(imgResized, vectorDesc);
 
+    // Verifica se o vetor de características foi computado com sucesso
+    if (vectorDesc.empty()) {
+        std::cerr << "Aviso: Vetor de características HOG vazio para imagem: " << imageName << std::endl;
+        return ImageVectorData(); // Retorna um ImageVectorData vazio
+    }
+
     // passa para Mat linha e normaliza (L2)
     cv::Mat vec(vectorDesc, true); // coluna Nx1
     vec = vec.reshape(1, 1);       // 1xN

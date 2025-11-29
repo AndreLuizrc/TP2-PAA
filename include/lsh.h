@@ -19,8 +19,8 @@ public:
 
     LSHIndex(
         int dim,
-        int num_tables = 8,
-        int num_planes = 18,
+        int num_tables = 20,
+        int num_planes = 15,
         unsigned int seed = 42
     );
 

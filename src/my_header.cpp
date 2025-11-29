@@ -249,9 +249,13 @@ void processAndPrintSimilarities(const ImageVectorData& imgComparar, const std::
     cout << setw(20) << left << "Imagem BD" << "| " << "Similaridade" << endl;
     cout << string(20, '-') << "|-" << string(15, '-') << endl;
 
-    for (const auto& result : similarityList) {
-        cout << setw(20) << left << result.bdImage.name << "| "
-             << fixed << setprecision(4) << result.similarity << endl;
+    size_t final_index = similarityList.size();
+    if (similarityList.size() > 5) {
+        final_index = 5;
+    }
+    for (size_t i = 0; i < final_index; ++i) {
+        cout << setw(20) << left << similarityList[i].bdImage.name << "| "
+             << fixed << setprecision(4) << similarityList[i].similarity << endl;
     }
 
     cout << "\nTempo de ordenacao: " << duration.count() << " ns\n" << endl;
@@ -284,7 +288,7 @@ void processWithKDTree(const std::string& folderBD, const std::string& folderCom
         // Mede o tempo da consulta
         auto start = std::chrono::high_resolution_clock::now();
 
-        auto resultados = kd.queryAllFromImage(queryImagePath, -1);
+        auto resultados = kd.queryAllFromImage(queryImagePath, 5);
         
         // Para o cronometro
         auto end = std::chrono::high_resolution_clock::now();
