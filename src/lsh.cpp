@@ -34,7 +34,7 @@ public:
     // ----------------------------------------------------
     // Inserção no índice
     // ----------------------------------------------------
-    void add(const ImageVectorData data) {
+    void add(const ImageVectorData& data) {
         cv::Mat normalized = data.vector;
         std::vector<std::string> hashes = hashVector(normalized);
 
@@ -43,6 +43,12 @@ public:
                 data.name,
                 normalized.clone()
             });
+        }
+    }
+
+    void addMultiple(const std::vector<ImageVectorData>& data_vector) {
+        for (const auto& data : data_vector) {
+            add(data);
         }
     }
 
