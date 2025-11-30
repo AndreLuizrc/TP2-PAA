@@ -73,39 +73,6 @@ void printRows(const vector<ImageVectorData>& bdImagens,
     }
 }
 
-// -----------------------------------------------------------------
-// LSH
-// -----------------------------------------------------------------
-
-void processWithLSH(const std::string& folderBD, const std::string& folderComparar) {
-    std::cout << "--------------------------------------------------------\n\n";
-    std::cout << "  LSH\n\n";
-    std::cout << "--------------------------------------------------------\n\n";
-
-    LSHIndex lsh(8100); // Dimensão 8100, ajustado com base na vetorização HOG
-
-    std::vector<ImageVectorData> bdImagensLSH = loadImages(folderBD, "BD");
-    if (bdImagensLSH.empty()) {
-        std::cerr << "Erro: BD esta vazio para LSH." << std::endl;
-        return;
-    }
-    lsh.addMultiple(bdImagensLSH);
-
-    std::vector<ImageVectorData> vCompararImagensLSH = loadImages(folderComparar, "comparar");
-    if (vCompararImagensLSH.empty()) {
-        std::cerr << "Erro: comparar esta vazio para LSH." << std::endl;
-        return;
-    }
-
-    for (const auto& imgComparar : vCompararImagensLSH) {
-        std::vector<LSHIndex::Result> results = lsh.query(imgComparar.vector, 5); // top 5
-        std::cout << "Imagens similares para " << imgComparar.name << " (LSH):\n";
-        for (const auto& result : results) {
-            std::cout << "  - " << result.image_name << " (Similaridade: " << std::fixed << std::setprecision(4) << result.similarity << ")\n";
-        }
-        std::cout << "\n";
-    }
-}
 
 // print rodape tabela
 void printFooter(size_t compararSize){
@@ -313,3 +280,51 @@ void processWithKDTree(const std::string& folderBD, const std::string& folderCom
         std::cout << "--------------------------------------------------------\n\n";
     }
 }
+
+// -----------------------------------------------------------------
+// LSH
+// -----------------------------------------------------------------
+
+void processWithLSH(const std::string& folderBD, const std::string& folderComparar) {
+    std::cout << "--------------------------------------------------------\n\n";
+    std::cout << "  LSH\n\n";
+    std::cout << "--------------------------------------------------------\n\n";
+
+    LSHIndex lsh(8100); // Dimensão 8100, ajustado com base na vetorização HOG
+
+    std::vector<ImageVectorData> bdImagensLSH = loadImages(folderBD, "BD");
+    if (bdImagensLSH.empty()) {
+        std::cerr << "Erro: BD esta vazio para LSH." << std::endl;
+        return;
+    }
+    lsh.addMultiple(bdImagensLSH);
+
+    std::vector<ImageVectorData> vCompararImagensLSH = loadImages(folderComparar, "comparar");
+    if (vCompararImagensLSH.empty()) {
+        std::cerr << "Erro: comparar esta vazio para LSH." << std::endl;
+        return;
+    }
+
+    for (const auto& imgComparar : vCompararImagensLSH) {
+        const std::string queryImagePath = imgComparar.name;
+
+        // Mede o tempo da consulta
+        auto start = std::chrono::high_resolution_clock::now();
+
+        std::vector<LSHIndex::Result> results = lsh.query(imgComparar.vector, -1); // top 5
+
+        // Para o cronometro
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double, std::nano> duration = end - start;
+
+         // Salva o log do tempo de execucao
+        logExecutionTime("log/lsh_log.csv", queryImagePath, results.size(), duration.count());
+
+        std::cout << "Imagens similares para " << imgComparar.name << " (LSH):\n";
+        for (const auto& result : results) {
+            std::cout << "  - " << result.image_name << " (Similaridade: " << std::fixed << std::setprecision(4) << result.similarity << ")\n";
+        }
+        std::cout << "\n";
+    }
+}
+

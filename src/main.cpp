@@ -50,6 +50,13 @@ int main()
 
   processWithMTree(folderBD, folderComparar);
 
+  /* LSH */
+  // std::cout << "--------------------------------------------------------\n\n";
+  // std::cout << "  LSH\n\n";
+  // std::cout << "--------------------------------------------------------\n\n";
+
+  processWithLSH(folderBD, folderComparar);
+
 
   /* TABELA COMPLETA DAS IMGS */
   if (!vCompararImagens.empty() && !bdImagens.empty())
